@@ -1,0 +1,21 @@
+{
+  "name": "zdenek-vacek-web",
+  "version": "3.0.0",
+  "description": "Web Zdeňka Vacka – React (Vite) + Express + SQLite/SQL soubor",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "build": "cd client && npm install && npm run build",
+    "optimize:photos": "node tools/optimize-photos.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "compression": "^1.8.2",
+    "express": "^4.22.3",
+    "sql.js": "^1.14.2",
+    "nodemailer": "^6.10.1"
+  }
+}
