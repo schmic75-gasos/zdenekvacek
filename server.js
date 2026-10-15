@@ -499,11 +499,22 @@ app.use('/api', (req, res) => res.status(404).json({ error: 'Nenalezeno' }));
 const baseUrl = (req) => CFG.siteUrl || `${req.protocol}://${req.get('host')}`;
 app.get('/robots.txt', (req, res) => res.type('text/plain').send(`User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /api/\nSitemap: ${baseUrl(req)}/sitemap.xml\n`));
 app.get('/sitemap.xml', wrap((req, res) => {
-  const urls = ['/', '/knihy', '/prednasky', '/kalendar', '/film-foto', '/hry', '/o-mne', '/kontakt', '/soukromi',
-    ...all('SELECT slug FROM programs').map((p) => '/prednasky/' + p.slug)];
+  const urls = [
+    ['/', '1.0'], ['/knihy', '0.9'], ['/prednasky', '0.9'], ['/kalendar', '0.9'],
+    ['/film-foto', '0.9'], ['/hry', '0.9'], ['/o-mne', '0.9'], ['/kontakt', '0.9'],
+    ['/prednasky/azorske-ostrovy', '0.8'], ['/prednasky/vcela-zaklad-zivota', '0.8'],
+    ['/prednasky/planeta-zeme', '0.8'], ['/prednasky/krajinou-mych-snu', '0.8'],
+    ['/prednasky/zeme-pulnocniho-slunce', '0.8'], ['/soukromi', '0.9'],
+    ['/hry/pozornost', '0.8'], ['/hry/flappybee', '0.8'], ['/hry/editor-vlocek', '0.8'],
+    ['/hry/vanocni-detektivka', '0.8'], ['/prednasky?typ=skoly', '0.9'],
+    ['/prednasky?typ=cestopisne', '0.9'], ['/games/vanoce/index.html', '0.7'],
+    ['/games/detektivka/index.html', '0.7'], ['/games/pozornost/index.html', '0.7'],
+    ['/games/hra.html', '0.8'],
+  ];
+  const lastmod = '2026-10-15';
   res.type('application/xml').send(
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-    urls.map((u) => `  <url><loc>${baseUrl(req)}${u}</loc></url>`).join('\n') + '\n</urlset>');
+    urls.map(([u, priority]) => `  <url>\n    <loc>${baseUrl(req)}${u}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <priority>${priority}</priority>\n  </url>`).join('\n') + '\n</urlset>');
 }));
 
 /* ---------- statické soubory ---------- */
